@@ -89,6 +89,7 @@ namespace scanner
                 }
             }
         }
+        printf("Failed to find %s\n", name.data());
         return nullptr;
     }
 }
