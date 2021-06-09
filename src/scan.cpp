@@ -37,7 +37,7 @@ namespace scanner
 
         for (size_t i = 0; i < signature.length();)
         {
-            if (std::isspace(signature[i]))
+            if (signature[i] == ' ')
             {
                 ++i;
             }
@@ -50,6 +50,10 @@ namespace scanner
             {
                 bytes.push_back({hex_to_num<uint8_t>(&signature[i]), false});
                 i += 2;
+            }
+            else
+            {
+                i++;
             }
         }
 
