@@ -34,6 +34,20 @@ void unhook_func(void *address)
 
 size_t (*o_write_callback)(char *ptr, size_t size, size_t nmemb, void *userdata);
 
+
+/*
+
+To modify responses:
+
+if(modify_this)
+{
+    auto resp = "New response!";
+    o_write_callback((char*)resp, 1, strlen(resp), userdata);
+    return size * nmemb;
+}
+
+*/
+
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata)
 {
     std::string out(static_cast<const char *>(ptr), size * nmemb);
