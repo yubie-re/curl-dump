@@ -103,13 +103,13 @@ void hook()
 #endif
 
     //g_curl_address = (void*)((uintptr_t)GetModuleHandleA(nullptr) + 0xFFFFFF); // Replace offset if you want to hardcode it
-    if(g_curl_address)
+    if (g_curl_address)
         hook_func((void **)&o_curl_easy_setopt, g_curl_address, curl_easy_setopt);
 }
 
 void unhook()
 {
-    if(g_curl_address)
+    if (g_curl_address)
         unhook_func(g_curl_address);
     if (g_write_func_address)
         unhook_func(g_write_func_address);
@@ -125,6 +125,9 @@ DWORD WINAPI main_thread(PVOID module)
         std::this_thread::yield();
     }
     unhook();
+    fclose(stdout);
+    FreeConsole();
+    FreeLibraryAndExitThread((HMODULE)module, 0);
     return 1;
 }
 
@@ -133,7 +136,7 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
-        CreateThread(nullptr, 0, &main_thread, nullptr, 0, nullptr);
+        CreateThread(nullptr, 0, &main_thread, (void *)module, 0, nullptr);
     }
     return TRUE;
 }
